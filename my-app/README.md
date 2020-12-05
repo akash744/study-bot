@@ -1,3 +1,10 @@
+Study bots app
+
+Milestones:
+ - Calendar
+ - Summarise bot
+ - Generate revision question
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
