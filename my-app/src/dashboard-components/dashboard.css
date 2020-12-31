@@ -1,0 +1,95 @@
+.App {
+    text-align: center;
+  }
+  
+  html, body { min-height: 100%; }
+  
+  div {
+    min-height: auto;
+    min-width: auto;
+  }
+  
+  #usage {
+    width: 40%;
+  }
+  
+  h1.logo {
+    color: orange;
+    display: block;
+    position: absolute;
+    left: 32%;
+  }
+
+  h2.graph_title {
+    padding-top: 3%;
+    background-color: whitesmoke;
+    font-size: 24px;
+    padding-bottom: 3%;
+  }
+  
+.usage_data {
+    background-color: lightgray;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.usage_data_contents {
+  margin-top: 15%;
+}
+
+img.data_graph {
+    max-width: 80%;
+    max-height: 80%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+
+  .calendar_preview {
+    background-color: lightgray;
+    height: 200px;
+    padding: 40px 10px 10px 10px;
+  }
+  
+  .study_time_stats {
+    background-color: lightgray;
+    height: 100px;
+    margin-top: 20px;
+    padding-top: 10px;
+  }
+  
+  .activities_due {
+    background-color: lightgray;
+    height: 100px;
+    margin-top: 20px;
+    padding-top: 10px;
+  }
+  
+  .miscellaneous_items {
+    background-color: lightgray;
+    height: 100px;
+    margin-top: 20px;
+    padding-top: 10px;
+  }
+  
+  #statistics {
+    display: block;
+    width: 30%;
+    min-height: 100%;
+    background-color: whitesmoke;
+  }
+  
+  img {
+    max-width: 90%;
+    max-height: 90%;
+  }
+  
+  .column {
+    float: right;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
