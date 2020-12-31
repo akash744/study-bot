@@ -1,0 +1,73 @@
+.App {
+    text-align: center;
+  }
+  
+  html, body { min-height: 100%; }
+  
+  div {
+    min-height: auto;
+    min-width: auto;
+  }
+
+  .sidebar_element {
+      width: 30%;
+      height:100vh;
+      background-color: orange;
+   }
+
+  h1.logo_name {
+    color: orange;
+    display: block;
+    position: absolute;
+    left: 140px;
+  }
+
+  img.user_icon {
+    background-color: violet;
+    width: 40px;
+    height: 40px;
+    border-radius: 50% 50%;
+    position: relative;
+    left: 140px;
+    top: 90px;
+  }
+
+  h2.username {
+      position: relative;
+      left: 140px;
+      top: 90px;
+  }
+
+  .nav_icon {
+      display: inline;
+      height: 35px;
+      width: 35px;
+  }
+
+  .icon_title {
+      display: inline;
+  }
+
+  .nav_buttons {
+      position: relative;
+      top: 100px;
+      left: 20px;
+  }
+
+.btn {
+    background-color: white;
+    border: orange;
+    border-style: solid;
+    border-width: 3px;
+    padding: 12px 16px;
+    margin: 10px 0px;
+    min-width: 380px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  /* Darker background on mouse-over */
+  .btn:hover {
+    background-color: orange;
+  }

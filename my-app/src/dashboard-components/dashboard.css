@@ -77,6 +77,14 @@ img.data_graph {
     min-height: 100%;
     background-color: whitesmoke;
   }
+
+  #sidebar {
+    display: block;
+    width: 28%;
+    min-height: 100%;
+    background-color: whitesmoke;
+    margin-right: 20px;
+  }
   
   img {
     max-width: 90%;
@@ -84,7 +92,7 @@ img.data_graph {
   }
   
   .column {
-    float: right;
+    float: left;
   }
   
   /* Clear floats after the columns */
