@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Day from './Day';
 import {PRIORITY} from '../../App';
 import Task from './Task';
@@ -29,7 +29,7 @@ function Calendar({tasks, classes}) {
         initialShowingClasses[c.name] = true;
     });
     const [showingClasses, primitiveSetShowingClasses] = useState(initialShowingClasses);
-    const setShowingClasses = c => {
+    const toggleShowingClass = c => {
         let newShowingClasses = {
             ...showingClasses,
             [c.name]: !showingClasses[c.name]
@@ -52,6 +52,15 @@ function Calendar({tasks, classes}) {
 
         primitiveSetShowingClasses(newShowingClasses);
     }
+    useEffect(() => {
+        let newShowingClasses = {...showingClasses};
+        classes.forEach(thisClass => {
+            if (showingClasses[thisClass.name] === undefined) {
+                newShowingClasses[thisClass.name] = true;
+            }
+        });
+        primitiveSetShowingClasses(newShowingClasses);
+    }, [classes]);
 
     let showingTasksBasedOnClass = tasks.filter(task => {
         return showingClasses[task.theClass.name];
@@ -122,7 +131,7 @@ function Calendar({tasks, classes}) {
                                 value={theClass.name}
                                 checked={showingClasses[theClass.name]}
                                 onChange={() => {
-                                    setShowingClasses(theClass);
+                                    toggleShowingClass(theClass);
                                 }}
                             />
                             <span>{theClass.name}</span>
