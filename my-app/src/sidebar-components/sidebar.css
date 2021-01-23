@@ -12,7 +12,26 @@
   .sidebar_element {
       width: 30%;
       height:100vh;
-      background-color: orange;
+      background-color: darkgray;
+   }
+
+   .sidebar_element_min {
+    width: 30%;
+    height:100vh;
+    background-color: darkgray;
+ }
+
+   img.min_icon {
+     height: 50px;
+     width: 50px;
+     position: absolute;
+     top: 20px;
+     left: 40px;
+     opacity: 0.4;
+   }
+
+   img.min_icon:hover {
+     opacity: 1;
    }
 
   h1.logo_name {
@@ -29,6 +48,15 @@
     border-radius: 50% 50%;
     position: relative;
     left: 140px;
+    top: 90px;
+  }
+
+  img.user_icon_min {
+    background-color: violet;
+    width: 40px;
+    height: 40px;
+    border-radius: 50% 50%;
+    position: relative;
     top: 90px;
   }
 
@@ -50,24 +78,43 @@
 
   .nav_buttons {
       position: relative;
-      top: 100px;
+      top: 160px;
       left: 20px;
   }
 
+  .nav_buttons_min {
+    position: relative;
+    top: 230px;
+}
+
 .btn {
-    background-color: white;
-    border: orange;
-    border-style: solid;
-    border-width: 3px;
+    background-color: transparent;
+    border-style: hidden;
     padding: 12px 16px;
     margin: 10px 0px;
     min-width: 380px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
+  }
+
+  .btn_min {
+    background-color: transparent;
+    border-style: hidden;
+    padding: 12px 16px;
+    margin: 10px 0px;
+    min-width: 100px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .btn_min:hover {
+    background-color: orange;
   }
   
   /* Darker background on mouse-over */
   .btn:hover {
     background-color: orange;
   }
+  
