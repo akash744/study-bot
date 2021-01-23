@@ -1,9 +1,15 @@
 import React from 'react';
 
-function Task({task}) {
+function Task({task, onClick}) {
     const {time, title, theClass} = task;
     return (
-        <div style={{backgroundColor: theClass ? theClass.color : undefined}}>
+        <div
+            onClick={onClick}
+            style={{
+                ...styles.container,
+                backgroundColor: theClass ? theClass.color : undefined
+            }}
+        >
             <p>
                 <span>{time.toLocaleString()}</span>
                 <br />
@@ -12,5 +18,11 @@ function Task({task}) {
         </div>
     );
 }
+
+const styles = {
+    container: {
+        cursor: 'pointer'
+    }
+};
 
 export default Task;

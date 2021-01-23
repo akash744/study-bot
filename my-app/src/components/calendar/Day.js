@@ -1,11 +1,11 @@
 import React from 'react';
 import Task from './Task';
 
-function Day({date, tasks = []}) {
+function Day({date, tasks = [], handleTaskClick}) {
     return (
         <div style={styles.container}>
             <p style={styles.date}>{date}</p>
-            {tasks.map((task, i) => <Task key={i} task={task}/>)}
+            {tasks.map((task, i) => <Task key={i} task={task} onClick={() => handleTaskClick(task)}/>)}
         </div>
     );
 }

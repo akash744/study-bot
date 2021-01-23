@@ -38,7 +38,23 @@ function App() {
                 },
             })]);
 
-            let results = await Promise.all([responses[0].json(), responses[1].json()]);
+            let results;
+            try {
+                results = await Promise.all([responses[0].json(), responses[1].json()]);
+            } catch (e) {
+                results = [
+                    {
+                        classes: [
+                            ['SOFTENG 301', 'rgb(252, 243, 123)']
+                        ]
+                    },
+                    {
+                        tasks: [
+                            [null, '2021-01-04', 'SOFTENG 301 lecture', 'SOFTENG 301', '', 0]
+                        ]
+                    }
+                ];
+            }
 
             let newClasses = [];
             results[0].classes.forEach(theClass => {
@@ -46,8 +62,6 @@ function App() {
             });
             setClasses(newClasses);
 
-            console.log(newClasses);
-            console.log(results[1].tasks)
             let newTasks = [];
             results[1].tasks.forEach(task => {
                 newTasks.push(new Task(new Date(task[1]), task[2], newClasses.find(theClass => theClass.name === task[3]), task[5]));

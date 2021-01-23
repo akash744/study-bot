@@ -16,6 +16,8 @@ function Calendar({tasks, classes}) {
         [31, calculateFebruaryLength(date.year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     );
 
+    const [focusedTask, setFocusedTask] = useState(null);
+
     const setDate = newDate => {
         primitiveSetDate(newDate);
 
@@ -83,6 +85,7 @@ function Calendar({tasks, classes}) {
                 date={currentDate}
                 tasks={todayTasks}
                 key={`${currentDate} ${previousMonth} ${possiblyPreviousYear}`}
+                handleTaskClick={setFocusedTask}
             />
         ));
     }
@@ -95,6 +98,7 @@ function Calendar({tasks, classes}) {
                 date={i + 1}
                 tasks={todayTasks}
                 key={`${i + 1} ${date.month} ${date.year}`}
+                handleTaskClick={setFocusedTask}
             />
         ));
     }
@@ -109,6 +113,7 @@ function Calendar({tasks, classes}) {
                 date={i + 1}
                 tasks={todayTasks}
                 key={`${i + 1} ${nextMonth} ${possiblyNextYear}`}
+                handleTaskClick={setFocusedTask}
             />
         ));
     }
@@ -116,6 +121,16 @@ function Calendar({tasks, classes}) {
     let priorityEvents = showingTasksBasedOnClassThisMonth.filter(task => task.priority === PRIORITY.HIGH);
     return (
         <div style={styles.container}>
+            {focusedTask ? (
+                <div style={styles.modalContainer} onClick={() => setFocusedTask(null)}>
+                    <div style={styles.modal} onClick={e => e.stopPropagation()}>
+                        <h2>{focusedTask.title}</h2>
+                        <p>{focusedTask.time.toLocaleString()}</p>
+                        <p>{focusedTask.theClass.name}</p>
+                        <p>Priority: {Object.keys(PRIORITY).find(key => PRIORITY[key] === focusedTask.priority).toLowerCase()}</p>
+                    </div>
+                </div>
+            ) : null}
             <div>
                 <p>Priority Events</p>
                 {priorityEvents.map((priorityEvent, i) => <Task key={priorityEvent.title + i} task={priorityEvent} />)}
@@ -123,13 +138,16 @@ function Calendar({tasks, classes}) {
 
             <div>
                 {classes.map(theClass => {
+                    // Has to do this the long way instead of just `showingClasses[theClass.name]`
+                    // to remove wawrning "A component is changing an uncontrolled input of type text to be controlled."
+                    // The warning happen because there might be a brief moment where `classes` and
+                    // `showingClasses` aren't in sync so `showingClasses[theClass.name]` return undefined
                     return (
                         <p key={theClass.name}>
                             <input
                                 type={'checkbox'}
                                 name={'class'}
-                                value={theClass.name}
-                                checked={showingClasses[theClass.name]}
+                                checked={showingClasses[theClass.name] === undefined ? false : showingClasses[theClass.name]}
                                 onChange={() => {
                                     toggleShowingClass(theClass);
                                 }}
@@ -229,6 +247,21 @@ const styles = {
         height: '100%',
         gridTemplateColumns: '200px 1fr',
         gridTemplateRows: '200px 1fr',
+    },
+    modalContainer: {
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modal: {
+        maxWidth: '800px',
+        width: '60%',
+        backgroundColor: 'white',
+        height: '80%'
     },
     rightSideColumn: {
         gridColumn: '2',
