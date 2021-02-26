@@ -2,48 +2,33 @@ import React from 'react';
 
 
 function LoginForm(){
+
+
     return(
-        <div class="container" id="container">
-	        <div class="form-container sign-in-container">
-				<h1 id='logo'>
-					Study-Bot
-				</h1>
-		        <form action="#">
-			        <h2>Artificial Intelligence Driving Results for Studying</h2>
-			        <h3 id= 'subtitle'>Welcome Please Sign In Or Sign Up.</h3>
-			        <input type="email" placeholder="Email" />
-			        <input type="password" placeholder="Password" />
-					
-					<div id="remember-me-forgot-pwd">
-						<div id="remember-me">
-							<input type="checkbox" id="remember_me"/>
-							<label>
-								Remember Me
-							</label>
-						</div>
-						<div id="forgot-pwd">
-							<a href="#"> Forgot Password ?</a>
-						</div>
-					</div>	
-					<div id="sign-in-sign-up">
-						<button>Sign In</button>
-						<button>Sign Up</button>
-					</div>
-					<div id="external-sign-in">
-						<h4>
-							Or Sign In With 
-						</h4>
-					</div>
-		        </form>
-	        </div>  
-			<div class="overlay-container">
-				<div class="overlay">
-					<div class="overlay-panel overlay-right">
-						<h1>Hello</h1>
+		<div class="cont">
+			<div class="form sign-in">
+				<h2>Sign In</h2>
+      			<label>
+				  <span>Email Address</span>
+				  <input type="email" name="email"></input>
+				</label>
+				<label>
+					<span>Password</span>
+					<input type="password" name="password"></input>
+      			</label>
+				<button class="submit" type="button">Sign In</button>
+				<p class="forgot-pass">Forgot Password ?</p>
+
+			</div>	
+			<div class="sub-cont">
+				<div class="img">
+					<div class="img-text m-up">
+						<h2>New here?</h2>
+          				<p>Sign up and discover great amount of new opportunities!</p>
 					</div>
 				</div>
 			</div>
-        </div>
+		</div>	
     )      
 }
 
