@@ -6,7 +6,7 @@ import { PageTitle, UserStatistics, UsageHours, CalendarPreview } from './dashbo
 const DashboardPage = () => {
     return (
         <div>
-            <div class="column" id="sidebar">
+            <div class="column">
                 <Sidebar />
             </div> 
             <div class="column" id="usage">

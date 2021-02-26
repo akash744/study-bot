@@ -10,23 +10,27 @@
   }
 
   .sidebar_element {
-      width: 30%;
+      display: block;
+      width: 28%;
       height:100vh;
-      background-color: darkgray;
+      background-color: rgba(250, 219, 161, 0.856);
+      margin-right: 2%;
    }
 
    .sidebar_element_min {
+    display: block;
     width: 30%;
     height:100vh;
-    background-color: darkgray;
+    background-color: rgba(250, 219, 161, 0.856);
+    margin-right: 2%;
  }
 
    img.min_icon {
      height: 50px;
      width: 50px;
      position: absolute;
-     top: 20px;
-     left: 40px;
+     top: 10px;
+     left: 10px;
      opacity: 0.4;
    }
 
@@ -47,7 +51,6 @@
     height: 40px;
     border-radius: 50% 50%;
     position: relative;
-    left: 140px;
     top: 90px;
   }
 
@@ -62,7 +65,6 @@
 
   h2.username {
       position: relative;
-      left: 140px;
       top: 90px;
   }
 
@@ -79,7 +81,6 @@
   .nav_buttons {
       position: relative;
       top: 160px;
-      left: 20px;
   }
 
   .nav_buttons_min {
