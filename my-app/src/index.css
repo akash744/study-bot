@@ -23,9 +23,13 @@
   
   .cont{
 	overflow: hidden;
-	position: relative;
+	position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 	width: 900px;
-	height: 550px;
+	height: 600px;
 	background: #fff;
 	box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
   }
@@ -34,50 +38,70 @@
 	position: relative;
 	width: 640px;
 	height: 100%;
-	padding: 50px 30px;
+	padding: 20px 20px;
+  }
+
+  #logo {
+	padding: 1px 45px;
+	color: rgb(255, 123, 0);
+	font-size: 30px;
   }
   
-  h2{
+  #slogan-line-1{
 	width: 100%;
-	font-size: 30px;
+	font-size: 32px;
+	padding-top: 50px;
+	padding-left: 100px;
+  }
+  #slogan-line-2{
+	width: 100%;
+	font-size: 32px;
 	text-align: center;
   }
+
+  #subtitle {
+	color: grey;
+	text-align: center;
+	padding-top: 40px;
+	padding-bottom: 10px;
+}
+  
   
   label{
 	display: block;
-	width: 260px;
-	margin: 25px auto 0;
+	width: 360px;
+	margin: 8px auto 0;
 	text-align: center;
   }
   
-  label span{
-	font-size: 14px;
-	font-weight: 600;
-	color: #505f75;
-	text-transform: uppercase;
-  }
-  
-  input{
-	display: block;
+ input {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0;
 	width: 100%;
-	margin-top: 5px;
-	font-size: 16px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid rgba(109, 93, 93, 0.4);
-	text-align: center;
-	font-family: 'Nunito', sans-serif; 
-  }
+}
+
+input:focus, textarea:focus
+{
+    border: 1px solid orangered;
+    box-shadow: 0 0 3px orange;
+    outline-offset: 0px;
+    outline: none;
+}
   
   button{
-	display: block;
 	margin: 0 auto;
-	width: 260px;
-	height: 36px;
 	border-radius: 30px;
-	color: #fff;
+	color: #FFFFFF;
 	font-size: 15px;
 	cursor: pointer;
+	padding: 12px 45px;
   }
+
+  button:active {
+	transform: scale(0.95);
+}
   
   .submit{
 	margin-top: 40px;
@@ -85,25 +109,35 @@
 	text-transform: uppercase;
 	font-weight: 600;
 	font-family: 'Nunito', sans-serif;
-	background: -webkit-linear-gradient(left, #7579ff, #b224ef);
+	background: orangered;
   }
   
   .submit:hover{
-	background: -webkit-linear-gradient(left, #b224ef, #7579ff);
+	background: rgb(255, 115, 0);
   }
-  
-  .forgot-pass{
-	margin-top: 15px;
-	text-align: center;
-	font-size: 14px;
-	font-weight: 600;
-	color: #0c0101;
-	cursor: pointer;
-  }
-  
-  .forgot-pass:hover{
-	color: red;
-  }
+
+  #sign-in-sign-up{
+	width: 405.59px;
+	display: flex;
+	justify-content: space-evenly;
+	margin: 0 auto;
+}
+
+#google-login{
+	display: flex;
+	justify-content: flex-start;
+	margin: 0 auto;
+}
+
+.GoogleLogin {
+	padding-left: 50px;
+}
+
+h5{
+	padding-left: 120px;
+	color: grey;
+	font-size: 15px;
+}
   
   .sub-cont{
 	overflow: hidden;
@@ -175,33 +209,7 @@
   }
   
   .sign-in{
-	padding-top: 65px;
+	padding-top: 45px;
   }
   
-  .img-btn{
-	overflow: hidden;
-	z-index: 2;
-	position: relative;
-	width: 100px;
-	height: 36px;
-	margin: 0 auto;
-	background: transparent;
-	color: #fff;
-	text-transform: uppercase;
-	font-size: 15px;
-	cursor: pointer;
-  }
-  
-  .img-btn span{
-	position: absolute;
-	left: 0;
-	top: 0;
-	display: -webkit-box;
-	display: flex;
-	-webkit-box-pack:center;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-  }
   
