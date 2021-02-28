@@ -30,8 +30,21 @@ def add_task():
         INSERT INTO TASK
         VALUES (NULL, '%s', '%s', '%s', '', %s)
     ''' % (request.json['time'], request.json['title'], request.json['classId'], request.json['priority']))
+    id = cur.lastrowid
     mysql.connection.commit()
-    return {}
+    return {'data': id}
+
+
+@app.route('/tasks/<task_id>', methods=['DELETE'])
+def delete_task(task_id):
+    cur = mysql.connection.cursor()
+    cur.execute('''
+        DELETE FROM TASK
+        WHERE TASK_ID = %s
+    ''' % task_id)
+    id = cur.lastrowid
+    mysql.connection.commit()
+    return {'data': id}
 
 
 @app.route('/classes', methods=['GET'])

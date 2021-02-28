@@ -17,7 +17,8 @@ function App() {
         this.color = color;
     }
 
-    function Task(time, title, theClass, priority) {
+    function Task(id, time, title, theClass, priority) {
+        this.id = id;
         this.time = time;
         this.title = title;
         this.theClass = theClass;
@@ -50,7 +51,7 @@ function App() {
                     },
                     {
                         tasks: [
-                            [null, '2021-01-04', 'SOFTENG 301 lecture', 'SOFTENG 301', '', 0]
+                            [1, '2021-01-04', 'SOFTENG 301 lecture', 'SOFTENG 301', '', 0]
                         ]
                     }
                 ];
@@ -64,7 +65,13 @@ function App() {
 
             let newTasks = [];
             results[1].tasks.forEach(task => {
-                newTasks.push(new Task(new Date(task[1]), task[2], newClasses.find(theClass => theClass.name === task[3]), task[5]));
+                newTasks.push(new Task(
+                    task[0],
+                    new Date(task[1]),
+                    task[2],
+                    newClasses.find(theClass => theClass.name === task[3]),
+                    task[5]
+                ));
             });
             setTasks(newTasks);
         }
@@ -73,20 +80,36 @@ function App() {
     }, []);
 
     const addTask = async (time, title, theClass, priority) => {
-        await fetch('/tasks', {
+        let res = await fetch('/tasks', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({time: time.toISOString().slice(0, 19).replace('T', ' '), title, classId: theClass.name, priority})
         });
-        setTasks([...tasks, new Task(time, title, theClass, priority)]);
+
+        setTasks([...tasks, new Task(
+            (await res.json()).data,
+            time,
+            title,
+            theClass,
+            priority
+        )]);
+    };
+
+    const deleteTask = async id => {
+        await fetch(`/tasks/${id}`, {
+            method: 'DELETE',
+        });
+
+        setTasks(tasks.filter(task => task.id != id));
     };
 
     return (
         <div style={{height: '100vh'}}>
             <Calendar tasks={tasks} classes={classes} taskOperations={{
-                addTask
+                addTask,
+                deleteTask,
             }}/>
         </div>
     );

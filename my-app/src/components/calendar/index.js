@@ -17,13 +17,6 @@ function Calendar({tasks, classes, taskOperations}) {
         [31, calculateFebruaryLength(date.year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     );
 
-    const [focusedTask, setFocusedTask] = useState(null);
-    const [isCreatingTask, setIsCreatingTask] = useState(false);
-    const [newTitle, setNewTitle] = useState('');
-    const [newDate, setNewDate] = useState('');
-    const [newClass, setNewClass] = useState('');
-    const [newPriority, setNewPriority] = useState('');
-
     const setDate = newDate => {
         primitiveSetDate(newDate);
 
@@ -31,6 +24,13 @@ function Calendar({tasks, classes, taskOperations}) {
         newMonthsLength[1] = calculateFebruaryLength(date.year);
         setMonthsLength(newMonthsLength);
     }
+
+    const [focusedTask, setFocusedTask] = useState(null);
+    const [isCreatingTask, setIsCreatingTask] = useState(false);
+    const [newTitle, setNewTitle] = useState('');
+    const [newDate, setNewDate] = useState('');
+    const [newClass, setNewClass] = useState('');
+    const [newPriority, setNewPriority] = useState('');
 
     let initialShowingClasses = {};
     classes.forEach(c => {
@@ -134,6 +134,10 @@ function Calendar({tasks, classes, taskOperations}) {
                 <p>Priority: {focusedTask ?
                     Object.keys(PRIORITY).find(key => PRIORITY[key] === focusedTask.priority).toLowerCase() :
                     null}</p>
+                <button onClick={async () => {
+                    await taskOperations.deleteTask(focusedTask.id);
+                    setFocusedTask(null);
+                }}>Delete</button>
             </Modal>
 
             <Modal open={isCreatingTask} closeHandler={() => setIsCreatingTask(false)}>
