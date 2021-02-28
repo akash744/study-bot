@@ -40,7 +40,7 @@ function App() {
 
             let results;
             try {
-                results = await Promise.all([responses[0].json(), responses[1].json()]);
+                results = await Promise.all([await responses[0].json(), await responses[1].json()]);
             } catch (e) {
                 results = [
                     {
@@ -72,9 +72,22 @@ function App() {
         initializeDate();
     }, []);
 
+    const addTask = async (time, title, theClass, priority) => {
+        await fetch('/tasks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({time: time.toISOString().slice(0, 19).replace('T', ' '), title, classId: theClass.name, priority})
+        });
+        setTasks([...tasks, new Task(time, title, theClass, priority)]);
+    };
+
     return (
         <div style={{height: '100vh'}}>
-            <Calendar tasks={tasks} classes={classes}/>
+            <Calendar tasks={tasks} classes={classes} taskOperations={{
+                addTask
+            }}/>
         </div>
     );
 }

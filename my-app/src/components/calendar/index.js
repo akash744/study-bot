@@ -2,11 +2,12 @@ import React, {useEffect, useState} from 'react';
 import Day from './Day';
 import {PRIORITY} from '../../App';
 import Task from './Task';
+import Modal from '../Modal';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-function Calendar({tasks, classes}) {
+function Calendar({tasks, classes, taskOperations}) {
     const [date, primitiveSetDate] = useState({
         month: new Date().getMonth(),
         year: new Date().getFullYear()
@@ -17,6 +18,11 @@ function Calendar({tasks, classes}) {
     );
 
     const [focusedTask, setFocusedTask] = useState(null);
+    const [isCreatingTask, setIsCreatingTask] = useState(false);
+    const [newTitle, setNewTitle] = useState('');
+    const [newDate, setNewDate] = useState('');
+    const [newClass, setNewClass] = useState('');
+    const [newPriority, setNewPriority] = useState('');
 
     const setDate = newDate => {
         primitiveSetDate(newDate);
@@ -121,16 +127,48 @@ function Calendar({tasks, classes}) {
     let priorityEvents = showingTasksBasedOnClassThisMonth.filter(task => task.priority === PRIORITY.HIGH);
     return (
         <div style={styles.container}>
-            {focusedTask ? (
-                <div style={styles.modalContainer} onClick={() => setFocusedTask(null)}>
-                    <div style={styles.modal} onClick={e => e.stopPropagation()}>
-                        <h2>{focusedTask.title}</h2>
-                        <p>{focusedTask.time.toLocaleString()}</p>
-                        <p>{focusedTask.theClass.name}</p>
-                        <p>Priority: {Object.keys(PRIORITY).find(key => PRIORITY[key] === focusedTask.priority).toLowerCase()}</p>
-                    </div>
-                </div>
-            ) : null}
+            <Modal open={focusedTask} closeHandler={() => setFocusedTask(null)}>
+                <h2>{focusedTask ? focusedTask.title : null}</h2>
+                <p>{focusedTask ? focusedTask.time.toLocaleString() : null}</p>
+                <p>{focusedTask ? focusedTask.theClass.name : null}</p>
+                <p>Priority: {focusedTask ?
+                    Object.keys(PRIORITY).find(key => PRIORITY[key] === focusedTask.priority).toLowerCase() :
+                    null}</p>
+            </Modal>
+
+            <Modal open={isCreatingTask} closeHandler={() => setIsCreatingTask(false)}>
+                <h2>Title</h2>
+                <input value={newTitle} onChange={e => setNewTitle(e.target.value)}/>
+                <p>Time</p>
+                <input type={'datetime-local'} value={newDate} onChange={e => setNewDate(e.target.value)}/>
+                <p>Class</p>
+                <select onChange={e => {
+                    let newClass = classes.find(theClass => theClass.name === e.target.value);
+                    setNewClass(newClass);
+                }}>
+                    <option>---</option>
+                    {classes.map(theClass => {
+                        return (<option value={theClass.name} key={theClass.name}>{theClass.name}</option>);
+                    })}
+                </select>
+                <p>Priority</p>
+                <select onChange={e => {
+                    setNewPriority(PRIORITY[e.target.value]);
+                }}>
+                    <option>---</option>
+                    {Object.keys(PRIORITY).map(priority => {
+                        return (<option value={priority} key={priority}>{priority}</option>);
+                    })}
+                </select>
+                <br />
+                <button onClick={() => {
+                    taskOperations.addTask(new Date(newDate), newTitle, newClass, newPriority)
+                    .then(() => {
+                        setIsCreatingTask(false);
+                    });
+                }}>Create</button>
+            </Modal>
+
             <div>
                 <p>Priority Events</p>
                 {priorityEvents.map((priorityEvent, i) => <Task key={priorityEvent.title + i} task={priorityEvent} />)}
@@ -159,7 +197,7 @@ function Calendar({tasks, classes}) {
             </div>
 
             <div style={styles.rightSideColumn}>
-                <div>
+                <div style={styles.header}>
                     <h2 style={styles.date}>{MONTHS[date.month] + ' ' + date.year}</h2>
                     <button style={styles.changeDateButton} onClick={() => {
                         setDate(previousMonthYear(date));
@@ -167,6 +205,9 @@ function Calendar({tasks, classes}) {
                     <button style={styles.changeDateButton} onClick={() => {
                         setDate(nextMonthYear(date));
                     }}>{'>'}</button>
+                    <button style={styles.createTaskButton} onClick={() => setIsCreatingTask(true)}>
+                        Create Task
+                    </button>
                 </div>
 
                 <div style={styles.calendarContainer}>
@@ -248,26 +289,15 @@ const styles = {
         gridTemplateColumns: '200px 1fr',
         gridTemplateRows: '200px 1fr',
     },
-    modalContainer: {
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)'
-    },
-    modal: {
-        maxWidth: '800px',
-        width: '60%',
-        backgroundColor: 'white',
-        height: '80%'
-    },
     rightSideColumn: {
         gridColumn: '2',
         gridRow: '1/3',
         display: 'flex',
         flexDirection: 'column',
+    },
+    header: {
+        display: 'flex',
+        alignItems: 'center',
     },
     date: {
         display: 'inline-block',
@@ -276,6 +306,9 @@ const styles = {
     changeDateButton: {
         marginLeft: '30px',
         padding: '5px 10px'
+    },
+    createTaskButton: {
+        marginLeft: 'auto'
     },
     calendarContainer: {
         flex: '1',

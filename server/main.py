@@ -23,6 +23,17 @@ def get_tasks():
     return {'tasks': rv}
 
 
+@app.route('/tasks', methods=['POST'])
+def add_task():
+    cur = mysql.connection.cursor()
+    cur.execute('''
+        INSERT INTO TASK
+        VALUES (NULL, '%s', '%s', '%s', '', %s)
+    ''' % (request.json['time'], request.json['title'], request.json['classId'], request.json['priority']))
+    mysql.connection.commit()
+    return {}
+
+
 @app.route('/classes', methods=['GET'])
 def get_classes():
     cur = mysql.connection.cursor()
