@@ -53,3 +53,15 @@ def get_classes():
     cur.execute('''SELECT * FROM CLASS''')
     rv = cur.fetchall()
     return {'classes': rv}
+
+
+@app.route('/classes', methods=['POST'])
+def add_class():
+    print(request.json)
+    cur = mysql.connection.cursor()
+    cur.execute('''
+        INSERT INTO CLASS
+        VALUES ('%s', '%s')
+    ''' % (request.json['name'], request.json['color']))
+    mysql.connection.commit()
+    return {}

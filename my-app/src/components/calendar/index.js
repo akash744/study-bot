@@ -32,6 +32,10 @@ function Calendar({tasks, classes, taskOperations}) {
     const [newClass, setNewClass] = useState('');
     const [newPriority, setNewPriority] = useState('');
 
+    const [isAddingClass, setIsAddingClass] = useState(false);
+    const [newName, setNewName] = useState('');
+    const [newColor, setNewColor] = useState('');
+
     let initialShowingClasses = {};
     classes.forEach(c => {
         initialShowingClasses[c.name] = true;
@@ -198,6 +202,18 @@ function Calendar({tasks, classes, taskOperations}) {
                         </p>
                     );
                 })}
+                <button onClick={() => setIsAddingClass(true)}>Add Class</button>
+                <Modal open={isAddingClass} closeHandler={() => setIsAddingClass(false)}>
+                    <h2>New Class</h2>
+                    <p>Name:</p>
+                    <input value={newName} onChange={e => setNewName(e.target.value)}/>
+                    <p>Display color in hex code:</p>
+                    <input value={newColor} onChange={e => setNewColor(e.target.value)}/>
+                    <button onClick={async () => {
+                        await taskOperations.addClass(newName, newColor);
+                        setIsAddingClass(false);
+                    }}>Create</button>
+                </Modal>
             </div>
 
             <div style={styles.rightSideColumn}>

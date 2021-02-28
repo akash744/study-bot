@@ -14,7 +14,9 @@ const styles = {
     modalContainer: {
         width: '100%',
         height: '100%',
-        position: 'absolute',
+        position: 'fixed',
+        top: '0px',
+        left: '0px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

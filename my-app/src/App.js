@@ -102,7 +102,19 @@ function App() {
             method: 'DELETE',
         });
 
-        setTasks(tasks.filter(task => task.id != id));
+        setTasks(tasks.filter(task => task.id !== id));
+    };
+
+    const addClass = async (name, color) => {
+        await fetch('/classes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({name, color})
+        });
+
+        setClasses([...classes, new Class(name, color)]);
     };
 
     return (
@@ -110,6 +122,7 @@ function App() {
             <Calendar tasks={tasks} classes={classes} taskOperations={{
                 addTask,
                 deleteTask,
+                addClass
             }}/>
         </div>
     );
