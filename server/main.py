@@ -26,10 +26,11 @@ def get_tasks():
 @app.route('/tasks', methods=['POST'])
 def add_task():
     cur = mysql.connection.cursor()
+    the_class = '\'' + request.json['classId'] + '\'' if request.json['classId'] else 'DEFAULT'
     cur.execute('''
         INSERT INTO TASK
-        VALUES (NULL, '%s', '%s', '%s', '', %s)
-    ''' % (request.json['time'], request.json['title'], request.json['classId'], request.json['priority']))
+        VALUES (NULL, '%s', '%s', %s, '', %s)
+    ''' % (request.json['time'], request.json['title'], the_class, request.json['priority']))
     id = cur.lastrowid
     mysql.connection.commit()
     return {'data': id}
@@ -42,9 +43,7 @@ def delete_task(task_id):
         DELETE FROM TASK
         WHERE TASK_ID = %s
     ''' % task_id)
-    id = cur.lastrowid
-    mysql.connection.commit()
-    return {'data': id}
+    return {}
 
 
 @app.route('/classes', methods=['GET'])
@@ -63,5 +62,16 @@ def add_class():
         INSERT INTO CLASS
         VALUES ('%s', '%s')
     ''' % (request.json['name'], request.json['color']))
+    mysql.connection.commit()
+    return {}
+
+
+@app.route('/classes/<class_id>', methods=['DELETE'])
+def delete_class(class_id):
+    cur = mysql.connection.cursor()
+    cur.execute('''
+        DELETE FROM CLASS
+        WHERE CLASS_ID = '%s'
+    ''' % class_id)
     mysql.connection.commit()
     return {}

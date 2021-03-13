@@ -26,6 +26,7 @@ function Calendar({tasks, classes, taskOperations}) {
     }
 
     const [focusedTask, setFocusedTask] = useState(null);
+
     const [isCreatingTask, setIsCreatingTask] = useState(false);
     const [newTitle, setNewTitle] = useState('');
     const [newDate, setNewDate] = useState('');
@@ -38,13 +39,13 @@ function Calendar({tasks, classes, taskOperations}) {
 
     let initialShowingClasses = {};
     classes.forEach(c => {
-        initialShowingClasses[c.name] = true;
+        initialShowingClasses[c.name + c.id] = true;
     });
     const [showingClasses, primitiveSetShowingClasses] = useState(initialShowingClasses);
     const toggleShowingClass = c => {
         let newShowingClasses = {
             ...showingClasses,
-            [c.name]: !showingClasses[c.name]
+            [c.name + c.id]: !showingClasses[c.name + c.id]
         };
 
         // Check to see if every classes will be unchecked
@@ -67,15 +68,16 @@ function Calendar({tasks, classes, taskOperations}) {
     useEffect(() => {
         let newShowingClasses = {...showingClasses};
         classes.forEach(thisClass => {
-            if (showingClasses[thisClass.name] === undefined) {
-                newShowingClasses[thisClass.name] = true;
+            // Handle new class
+            if (showingClasses[thisClass.name + thisClass.id] === undefined) {
+                newShowingClasses[thisClass.name + thisClass.id] = true;
             }
         });
         primitiveSetShowingClasses(newShowingClasses);
     }, [classes]);
 
     let showingTasksBasedOnClass = tasks.filter(task => {
-        return showingClasses[task.theClass.name];
+        return showingClasses[task.theClass.name + task.theClass.id];
     });
 
     let showingTasksBasedOnClassThisMonth = [];
@@ -151,12 +153,14 @@ function Calendar({tasks, classes, taskOperations}) {
                 <input type={'datetime-local'} value={newDate} onChange={e => setNewDate(e.target.value)}/>
                 <p>Class</p>
                 <select onChange={e => {
-                    let newClass = classes.find(theClass => theClass.name === e.target.value);
+                    let newClass = classes.find(theClass => theClass.name + theClass.id === e.target.value);
                     setNewClass(newClass);
                 }}>
-                    <option>---</option>
                     {classes.map(theClass => {
-                        return (<option value={theClass.name} key={theClass.name}>{theClass.name}</option>);
+                        return (<option
+                            value={theClass.name + theClass.id}
+                            key={theClass.name + theClass.id}>{theClass.name}
+                        </option>);
                     })}
                 </select>
                 <p>Priority</p>
@@ -189,16 +193,22 @@ function Calendar({tasks, classes, taskOperations}) {
                     // The warning happen because there might be a brief moment where `classes` and
                     // `showingClasses` aren't in sync so `showingClasses[theClass.name]` return undefined
                     return (
-                        <p key={theClass.name}>
+                        <p key={theClass.name + theClass.id}>
                             <input
                                 type={'checkbox'}
                                 name={'class'}
-                                checked={showingClasses[theClass.name] === undefined ? false : showingClasses[theClass.name]}
+                                checked={showingClasses[theClass.name + theClass.id] === undefined ?
+                                    false :
+                                    showingClasses[theClass.name + theClass.id]}
                                 onChange={() => {
                                     toggleShowingClass(theClass);
                                 }}
                             />
                             <span>{theClass.name}</span>
+                            {theClass.id !== null && <button
+                                onClick={() => taskOperations.deleteClass(theClass.id)}
+                                style={styles.removeClassButton}
+                            >x</button>}
                         </p>
                     );
                 })}
@@ -308,6 +318,9 @@ const styles = {
         height: '100%',
         gridTemplateColumns: '200px 1fr',
         gridTemplateRows: '200px 1fr',
+    },
+    removeClassButton: {
+        float: 'right',
     },
     rightSideColumn: {
         gridColumn: '2',

@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import './App.css';
 import Calendar from './components/calendar/index.js';
 
@@ -12,10 +12,14 @@ function App() {
     const [classes, setClasses] = useState([]);
     const [tasks, setTasks] = useState([]);
 
-    function Class(name, color) {
+    // id is introduced to distinguish the normal class (where name equals id)
+    // from no class (where id is null)
+    function Class(name, color, id = name) {
         this.name = name;
         this.color = color;
+        this.id = id;
     }
+    const classNull = useRef(new Class('Others', '#aaaaaa', null)).current;
 
     function Task(id, time, title, theClass, priority) {
         this.id = id;
@@ -57,7 +61,7 @@ function App() {
                 ];
             }
 
-            let newClasses = [];
+            let newClasses = [classNull];
             results[0].classes.forEach(theClass => {
                 newClasses.push(new Class(theClass[0], theClass[1]));
             });
@@ -65,11 +69,14 @@ function App() {
 
             let newTasks = [];
             results[1].tasks.forEach(task => {
+                let theClass = task[3] ?
+                    newClasses.find(theClass => theClass.name === task[3]) :
+                    classNull;
                 newTasks.push(new Task(
                     task[0],
                     new Date(task[1]),
                     task[2],
-                    newClasses.find(theClass => theClass.name === task[3]),
+                    theClass,
                     task[5]
                 ));
             });
@@ -85,7 +92,7 @@ function App() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({time: time.toISOString().slice(0, 19).replace('T', ' '), title, classId: theClass.name, priority})
+            body: JSON.stringify({time: time.toISOString().slice(0, 19).replace('T', ' '), title, classId: theClass.id, priority})
         });
 
         setTasks([...tasks, new Task(
@@ -117,12 +124,27 @@ function App() {
         setClasses([...classes, new Class(name, color)]);
     };
 
+    const deleteClass = async id => {
+        await fetch(`/classes/${id}`, {
+            method: 'DELETE',
+        });
+
+        setClasses(classes.filter(currentClass => currentClass.id !== id));
+        setTasks(tasks.map(task => {
+            if (task.theClass.id === id) {
+                return new Task(task.id, task.time, task.title, classNull, task.priority);
+            }
+            return task;
+        }));
+    };
+
     return (
         <div style={{height: '100vh'}}>
             <Calendar tasks={tasks} classes={classes} taskOperations={{
                 addTask,
                 deleteTask,
-                addClass
+                addClass,
+                deleteClass,
             }}/>
         </div>
     );
